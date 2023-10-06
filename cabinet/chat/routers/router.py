@@ -18,7 +18,7 @@ class ConnectionManager:
     async def send_personal_message(self, message: dict, websocket: WebSocket):
         await websocket.send_json(message)
 
-    async def broadcast(self, message: str):
+    async def broadcast(self, message: dict):
         for connection in self.active_connections:
             await connection.send_json(message)
 
@@ -48,5 +48,6 @@ async def websocket_endpoint(websocket: WebSocket):
             data = await websocket.receive_json()
             await manager.broadcast(data)
     except WebSocketDisconnect:
+        last = websocket
         manager.disconnect(websocket)
-        await manager.broadcast(f"Client left the chat")
+        await manager.broadcast({"name": last.client.host, "message": "Вышел из чата :("})
