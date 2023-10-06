@@ -16,17 +16,19 @@
             if (localStorage.name === undefined){
                 location.href = '/registration'
             }
-            var ws = new WebSocket("ws://localhost:80/ws");
+            var ws = new WebSocket("ws://osetr.space:80/ws");
             ws.onmessage = function(event) {
+                let data = JSON.parse(event.data)
                 var messages = document.getElementById('messages')
                 var message = document.createElement('li')
-                var content = document.createTextNode(event.data)
+                var content = document.createTextNode(data["name"] + ": " + data["message"])
                 message.appendChild(content)
                 messages.appendChild(message)
             };
             function sendMessage(event) {
-                var input = document.getElementById("messageText")
-                ws.send(localStorage.name + ' ' + input.value)
+                let input = document.getElementById("messageText")
+                let data = JSON.stringify({"name": localStorage.name, "message": input.value})
+                ws.send(data)
                 input.value = ''
                 event.preventDefault()
             }
