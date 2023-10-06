@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход</title>
+</head>
+<body>
+    <label for="name">Имя</label>
+    <input id="name" type="text">
+    <input type="submit" value="Войти" onclick="send()">
+    <script>
+        check()
+        function check(){
+            if(localStorage.name !== undefined){
+                return location.href = '/chat'
+            }
+        }
+
+        function send(name){
+            localStorage.setItem('name', document.getElementById('name').value)
+            location.href = '/chat'
+        }
+    </script>
+</body>
+</html>
